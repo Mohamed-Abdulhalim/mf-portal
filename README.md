@@ -4,7 +4,7 @@ A small internal portal so consultants can see enquiries coming out of the
 Question 1 intake automation, filter to the ones that matter to them, and
 move them along, without ever touching n8n or the automation.
 
-**Live app:** _add your Vercel URL here after deploying_
+**Live app:** [https://mf-portal-one.vercel.app/](url)
 **Repo:** _this repo_
 
 ## Stack
