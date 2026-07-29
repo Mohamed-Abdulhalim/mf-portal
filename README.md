@@ -7,8 +7,8 @@ A small internal portal so consultants can see enquiries, filter them, and move 
 ## Stack
 
 - Next.js 15 (App Router) + TypeScript
-- Tailwind for styling
-- Supabase (Postgres) for storage, using the JS client directly (no ORM)
+- Tailwind
+- Supabase (Postgres)
 
 ## Setup
 
@@ -19,26 +19,19 @@ A small internal portal so consultants can see enquiries, filter them, and move 
 
 ## What it does
 
-- Lists all enquiry records, newest first.
-- Filters by status and assigned consultant, plus a "needs review only" toggle, since that flag from the automation is what a consultant should triage first.
-- Lets you change an enquiry's status inline (`new` → `in_progress` → `awaiting_client` → `placed`/`closed_lost`) via a dropdown per row. Updates go through `PATCH /api/enquiries/[id]` to Supabase and reflect optimistically in the UI.
+- Lists all enquiry records newest first.
+- Filters by status and assigned consultant plus a "needs review only" toggle.
+- Lets you change an enquiry's status via a dropdown per row. Updates go to Supabase and reflect live in the UI.
 
 ## Schema
 
-See [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql). The `enquiries` table mirrors the record shape the n8n intake workflow produces (`enquiry_id`, `source`, `enquiry_type`, `sector`, `assigned_consultant`, `needs_human_review`, etc.) and adds two portal-only columns on top: `status` and `updated_at`, which is what this app is actually for. Row-level security is enabled with permissive policies for now (see trade-offs below).
+Check [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql). The `enquiries` table mirrors the record shape that the n8n workflow produces and adds two portal only columns on top of them which are `status` and `updated_at`.
 
-Three code comments worth reading, each marking a trade-off:
 
-| File | Trade-off |
-|---|---|
-| [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) | Why RLS is wide open in v1 instead of blocking the app |
-| [`app/api/enquiries/[id]/route.ts`](app/api/enquiries/[id]/route.ts) | Why the API route uses the anon key rather than a service-role key |
-| [`components/EnquiriesTable.tsx`](components/EnquiriesTable.tsx) | Why status updates are optimistic rather than waiting on the round trip |
+## What I left out on purpose
 
-## What I left out, on purpose
+There's no login so anyone with the URL can see and edit every enquiry. For a one week v1 handed to a team of 5, I'd rather ship something that they can use today than picking an auth provider and modeling consultant logins. That's the highest priority and it's a contained piece of work, you add Supabase Auth and tighten the RLS policies and you're done.
 
-There's no login. Anyone with the URL can see and edit every enquiry. For a one-week v1 handed to a five-person team, I'd rather ship something they can actually use today than block on picking an auth provider and modeling consultant identities. It's the single highest priority follow-up, and it's a contained piece of work: add Supabase Auth, tighten the RLS policies that are already scaffolded in, done.
+## What I kept on purpose
 
-## What I insisted on keeping
-
-The status change has to hit the database, not just the screen. It would have been faster to fake it with local state and call it a demo, but the whole point of the brief is a team that stops needing the automation open. If clicking a status dropdown doesn't durably persist, the portal is just a prettier read only export of the sheet, and consultants would still be pinging each other, or the founder, asking whether that got updated. That's the one thing that had to be real.
+The status changes update on the interface instantly before the database confirms the change instead of waiting on the round trip like the simpler version would. Cuz a consultant clicking through a list of enquiries would feel every stall so removing that is more important than the extra code it took. And if the write fails, the badge snaps back and shows an error message instead of failing silently.
