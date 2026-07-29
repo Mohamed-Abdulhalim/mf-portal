@@ -1,9 +1,8 @@
-Marlow & Finch — Enquiry Desk
+Marlow & Finch Enquiry Desk
 
-A small internal portal so consultants can see enquiries coming out of the Question 1 intake automation, filter to the ones that matter to them, and move them along without ever touching n8n or the automation.
+A small internal portal so consultants can see enquiries, filter them, and move them along effortlessly.
 
 Live app: https://mf-portal-one.vercel.app/
-Repo: this repo
 
 Stack
 Next.js 15 (App Router) + TypeScript
