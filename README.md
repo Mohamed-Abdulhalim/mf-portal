@@ -30,7 +30,7 @@ Check [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql). 
 
 ## What I left out on purpose
 
-There's no login so anyone with the URL can see and edit every enquiry. For a one week v1 handed to a team of 5, I'd rather ship something that they can use today than picking an auth provider and modeling consultant logins. That's the highest priority and it's a contained piece of work, you add Supabase Auth and tighten the RLS policies and you're done.
+There's no login so anyone with the URL can see and edit every enquiry. For a one week v1 handed to a team of 5, I'd rather ship something that they can use today than picking an auth provider and modeling consultant logins. That's the highest priority and it's a contained piece of work, you can add Supabase Auth and tighten the RLS policies and you're done.
 
 ## What I kept on purpose
 
