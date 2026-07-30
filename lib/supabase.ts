@@ -1,8 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 
-// NOTE: using the public anon key on the client is fine here because RLS
-// policies on `enquiries` are wide open for v1 (no auth yet — see README).
-// If auth gets added, this same client keeps working; only the policies change.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
