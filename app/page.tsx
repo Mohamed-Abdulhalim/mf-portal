@@ -1,11 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import EnquiriesTable from "@/components/EnquiriesTable";
 
-// Server component: fetch happens on the server on each request. For a
-// small internal tool like this, that's simpler and safer than shipping a
-// client-side fetch-on-mount — no loading flash, no exposed query logic.
-// Realtime updates aren't needed here since a consultant refreshing the
-// page is a totally normal workflow for a low-volume internal tool.
 export const dynamic = "force-dynamic";
 export default async function Home() {
   const { data: enquiries, error } = await supabase
