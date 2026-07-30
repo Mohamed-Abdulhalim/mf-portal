@@ -1,7 +1,3 @@
--- Seed rows: the three real outputs from the Question 1 workflow, plus a
--- couple of extra mock rows so the filters (status x consultant) have
--- something to actually filter across in the demo.
-
 insert into enquiries (
   enquiry_id, received_at, source, raw_text, contact_name, company,
   enquiry_type, role_title, location, salary_or_budget, employment_type,
