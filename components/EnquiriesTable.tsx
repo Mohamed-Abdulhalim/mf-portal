@@ -23,9 +23,6 @@ export default function EnquiriesTable({
   const [reviewOnly, setReviewOnly] = useState(false);
   const [pendingId, setPendingId] = useState<string | null>(null);
 
-  // Derived from the data rather than hardcoded, so a new consultant showing
-  // up in the routing table (see workflow.json DESK_ROUTING) just appears
-  // here automatically without a code change to this file.
   const consultants = useMemo(() => {
     const set = new Set(
       enquiries.map((e) => e.assigned_consultant).filter(Boolean) as string[]
@@ -43,10 +40,7 @@ export default function EnquiriesTable({
 
   async function handleStatusChange(id: string, newStatus: EnquiryStatus) {
     setPendingId(id);
-    // Optimistic update: the consultant sees the change immediately rather
-    // than waiting on the round trip. If the PATCH fails we roll it back
-    // and surface an alert — simple, but honest about the failure mode
-    // instead of silently leaving the UI in a wrong state.
+
     const previous = enquiries;
     setEnquiries((prev) =>
       prev.map((e) => (e.id === id ? { ...e, status: newStatus } : e))
